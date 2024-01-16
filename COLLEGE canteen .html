@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Canteen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+ 	    background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpwd6PlOvWoLREYlpZr6mTfoEveQ7mHnbyKA&usqp=CAU') center/cover fixed no-repeat;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em;
+        }
+
+        main {
+            max-width: 1300px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #29465B;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #555;
+        }
+
+        #cart {
+            margin-top: 20px;
+        }
+
+        #cart table {
+            width: 100%;
+        }
+
+        #cart .total {
+            text-align: right;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1> Sri Venkateswara College Canteen Menu</h1>
+    </header>
+
+    <main>
+        <h2>Menu</h2>
+        <table id="menu">
+            <thead>
+                <tr>
+                    <th>Dish</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+		<tr>
+                    <td>Coffee</td>
+                    <td>Rs.10</td>
+                    <td><button onclick="addToCart('Coffee',10)">Add to Cart</button></td>
+                </tr>
+                <tr>
+                    <td>Tea</td>
+                    <td>Rs.10</td>
+                    <td><button onclick="addToCart('Tea',10)">Add to Cart</button></td>
+                </tr>
+                <tr>
+                    <td>Idli vada </td>
+                    <td>Rs.40</td>
+                    <td><button onclick="addToCart('Idli vada',40)">Add to Cart</button></td>
+                </tr>
+                <tr>
+                    <td>Masala dosa </td>
+                    <td>Rs.30</td>
+                    <td><button onclick="addToCart('Masala dosa ',30)">Add to Cart</button></td>
+                </tr>
+		<tr>
+                    <td>Poori sagu </td>
+                    <td>Rs.30</td>
+                    <td><button onclick="addToCart('Poori sagu ',30)">Add to Cart</button></td>
+                </tr>
+                <tr>
+                    <td>Dokla </td>
+                    <td>Rs.40</td>
+                    <td><button onclick="addToCart('Dokla',40)">Add to Cart</button></td>
+                </tr>
+                <tr>
+                    <td>Rice bath</td>
+                    <td>Rs.40</td>
+                    <td><button onclick="addToCart('Rice bath',40)">Add to Cart</button></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <h2>Combos</h2>
+        <table id="combos">
+            <thead>
+                <tr>
+                    <th>Combo</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Burger + Fries</td>
+                    <td>Rs 90</td>
+                    <td><button onclick="addToCart('Burger + Fries', 90)">Add to Cart</button></td>
+                </tr>
+                <tr>
+                    <td>Pizza + Drink</td>
+                    <td>Rs.100</td>
+                    <td><button onclick="addToCart('Pizza + Drink',100)">Add to Cart</button></td>
+                </tr>
+              <tr>
+                    <td>Biryani+kabab</td>
+                    <td>Rs.120</td>
+                    <td><button onclick="addToCart('Biryani + kabab',120)">Add to Cart</button></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="button-container">
+            <a href="#" class="button" onclick="showCart()">View Cart</a>
+        </div>
+
+        <div id="cart" style="display: none;">
+            <h2>Shopping Cart</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-items">
+                    <!-- Cart items will be added dynamically using JavaScript -->
+                </tbody>
+            </table>
+            <div class="total" id="cart-total">Total: $0.00</div>
+            <div class="button-container">
+                <a href="#" class="button" onclick="checkout()">Checkout</a>
+            </div>
+        </div>
+    </main>
+
+     <script>
+        let cart = [];
+
+        function addToCart(item, price) {
+            cart.push({ item, price });
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+
+            // Clear existing items
+            cartItems.innerHTML = '';
+
+            // Add new items to the cart
+            cart.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${item.item}</td><td>$${item.price.toFixed(2)}</td>`;
+                cartItems.appendChild(row);
+            });
+
+            // Calculate and display total
+            const total = cart.reduce((acc, item) => acc + item.price, 0);
+            cartTotal.textContent = `Total: $${total.toFixed(2)}`;
+        }
+
+        function showCart() {
+            const cartContainer = document.getElementById('cart');
+            cartContainer.style.display = 'block';
+            updateCart();
+        }
+
+        function checkout() {
+            alert('Thank you for your order!');
+            cart = [];
+            updateCart();
+            document.getElementById('cart').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
